@@ -273,7 +273,16 @@ open class ImageScrollView: UIScrollView {
         
         return zoomRect
     }
-    
+    func croppedImage() -> UIImage {
+        let scale:CGFloat = 1/self.zoomScale
+        let x:CGFloat = self.contentOffset.x * scale
+        let y:CGFloat = self.contentOffset.y * scale
+        let width:CGFloat = self.frame.size.width * scale
+        let height:CGFloat = self.frame.size.height * scale
+        let croppedCGImage = self.zoomView?.image?.cgImage?.cropping(to: CGRect(x: x, y: y, width: width, height: height))
+        let croppedImage = UIImage(cgImage: croppedCGImage!)
+        return croppedImage
+    }
     open func refresh() {
         if let image = zoomView?.image {
             display(image: image)
